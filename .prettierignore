@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+
+# Production builds
+.next/
+out/
+dist/
+build/
+
+# Environment files
+.env*
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Package files
+package-lock.json
+yarn.lock
+
+# Git
+.git/
+
+# Husky
+.husky/
+
+# Coverage
+coverage/
+
+# Public assets
+public/

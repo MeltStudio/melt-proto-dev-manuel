@@ -11,22 +11,22 @@ export type TaskStatus = 'pending' | 'in_progress' | 'completed';
 export interface Task {
   /** Unique identifier for the task */
   id: string;
-  
+
   /** Task title/name - brief description of what needs to be done */
   title: string;
-  
+
   /** Detailed description of the task requirements */
   description: string;
-  
+
   /** Current status of the task */
   status: TaskStatus;
-  
+
   /** ISO string representation of when the task is due */
   dueDate: string;
-  
+
   /** ISO string representation of when the task was created */
   createdAt: string;
-  
+
   /** ISO string representation of when the task was last modified */
   updatedAt: string;
 }
