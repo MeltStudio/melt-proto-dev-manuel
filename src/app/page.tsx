@@ -19,11 +19,6 @@ export default function Home() {
                 </h1>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
-              <div className="text-sm text-gray-500">
-                Built with Next.js & React Query
-              </div>
-            </div>
           </div>
         </div>
       </header>
@@ -32,56 +27,6 @@ export default function Home() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <TaskTable />
       </main>
-
-      {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center text-sm text-gray-500">
-            <p>
-              © 2025 Tasks Management App. Built with{' '}
-              <a
-                href="https://nextjs.org"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-800 font-medium"
-              >
-                Next.js
-              </a>
-              ,{' '}
-              <a
-                href="https://tanstack.com/query"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-800 font-medium"
-              >
-                React Query
-              </a>
-              , and{' '}
-              <a
-                href="https://tailwindcss.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-800 font-medium"
-              >
-                Tailwind CSS
-              </a>
-              .
-            </p>
-            <p className="mt-2">
-              Ready for{' '}
-              <a
-                href="https://subframe.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-800 font-medium"
-              >
-                Subframe
-              </a>{' '}
-              integration.
-            </p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
