@@ -16,72 +16,48 @@ export const taskQueryKeys = {
 
 /**
  * Task Storage Management
- * Manages local storage for task persistence
+ * Manages in-memory task storage for the demo application
  */
 class TaskStorage {
-  private static readonly STORAGE_KEY = 'tasks-app-data';
+  private static tasks: Task[] = [...mockTasks];
 
   /**
-   * Get all tasks from localStorage
-   * Falls back to mock data if no stored data exists
+   * Get all tasks from memory
    */
   static getTasks(): Task[] {
-    console.log('🏪 TaskStorage.getTasks called');
-
-    if (typeof window === 'undefined') {
-      console.log('🖥️ Window undefined (SSR), returning mock data');
-      return mockTasks;
-    }
-
-    try {
-      console.log('🔑 Reading from localStorage with key:', this.STORAGE_KEY);
-      const stored = localStorage.getItem(this.STORAGE_KEY);
-
-      if (stored) {
-        console.log('📜 Found stored data, parsing...');
-        const parsed = JSON.parse(stored);
-        console.log('✅ Parsed stored tasks:', parsed.length, 'tasks');
-        return parsed;
-      } else {
-        console.log('📝 No stored data found, using mock data');
-        // Save mock data to localStorage for future use
-        this.saveTasks(mockTasks);
-        return mockTasks;
-      }
-    } catch (error) {
-      console.error('💥 Error reading tasks from localStorage:', error);
-      console.log('🔄 Falling back to mock data');
-      return mockTasks;
-    }
+    console.log(
+      '🏪 TaskStorage.getTasks called - returning',
+      this.tasks.length,
+      'tasks'
+    );
+    return [...this.tasks];
   }
 
   /**
-   * Save tasks to localStorage
+   * Save tasks to memory
    * @param tasks - Array of tasks to save
    */
   static saveTasks(tasks: Task[]): void {
     console.log('💾 TaskStorage.saveTasks called with', tasks.length, 'tasks');
-
-    if (typeof window === 'undefined') {
-      console.log('🖥️ Window undefined (SSR), skipping save');
-      return;
-    }
-
-    try {
-      const serialized = JSON.stringify(tasks);
-      localStorage.setItem(this.STORAGE_KEY, serialized);
-      console.log('✅ Tasks saved to localStorage successfully');
-    } catch (error) {
-      console.error('💥 Error saving tasks to localStorage:', error);
-    }
+    this.tasks = [...tasks];
+    console.log('✅ Tasks saved to memory successfully');
   }
 
   /**
-   * Clear all tasks from localStorage
+   * Reset tasks to original mock data
+   * Useful for development and testing
+   */
+  static resetToMockData(): void {
+    console.log('🔄 Resetting to original mock data');
+    this.tasks = [...mockTasks];
+  }
+
+  /**
+   * Clear all tasks from memory
    */
   static clearTasks(): void {
-    if (typeof window === 'undefined') return;
-    localStorage.removeItem(this.STORAGE_KEY);
+    console.log('🗑️ Clearing all tasks from memory');
+    this.tasks = [];
   }
 }
 

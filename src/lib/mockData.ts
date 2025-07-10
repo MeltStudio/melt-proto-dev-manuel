@@ -76,6 +76,136 @@ export const mockTasks: Task[] = [
     createdAt: '2025-07-10T18:30:00Z',
     updatedAt: '2025-07-10T18:30:00Z',
   },
+  {
+    id: '8',
+    title: 'Create API documentation',
+    description:
+      'Write comprehensive API documentation using OpenAPI/Swagger with examples and best practices',
+    status: 'completed',
+    dueDate: '2025-07-12',
+    createdAt: '2025-07-08T09:00:00Z',
+    updatedAt: '2025-07-08T09:00:00Z',
+  },
+  {
+    id: '9',
+    title: 'Setup monitoring and logging',
+    description:
+      'Implement application monitoring, error tracking, and structured logging for production environment',
+    status: 'in_progress',
+    dueDate: '2025-07-28',
+    createdAt: '2025-07-09T13:20:00Z',
+    updatedAt: '2025-07-09T13:20:00Z',
+  },
+  {
+    id: '10',
+    title: 'Mobile responsive design',
+    description:
+      'Ensure application is fully responsive and optimized for mobile devices and tablets',
+    status: 'completed',
+    dueDate: '2025-07-18',
+    createdAt: '2025-07-08T15:45:00Z',
+    updatedAt: '2025-07-08T15:45:00Z',
+  },
+  {
+    id: '11',
+    title: 'Implement search functionality',
+    description:
+      'Add full-text search capabilities for tasks with filters and advanced search options',
+    status: 'pending',
+    dueDate: '2025-08-01',
+    createdAt: '2025-07-10T12:30:00Z',
+    updatedAt: '2025-07-10T12:30:00Z',
+  },
+  {
+    id: '12',
+    title: 'Security audit and penetration testing',
+    description:
+      'Conduct comprehensive security assessment including vulnerability scanning and penetration testing',
+    status: 'pending',
+    dueDate: '2025-08-12',
+    createdAt: '2025-07-10T14:15:00Z',
+    updatedAt: '2025-07-10T14:15:00Z',
+  },
+  {
+    id: '13',
+    title: 'User onboarding flow',
+    description:
+      'Design and implement guided user onboarding with tutorials and interactive elements',
+    status: 'in_progress',
+    dueDate: '2025-07-22',
+    createdAt: '2025-07-09T11:00:00Z',
+    updatedAt: '2025-07-09T11:00:00Z',
+  },
+  {
+    id: '14',
+    title: 'Data backup and recovery system',
+    description:
+      'Implement automated backup system with disaster recovery procedures and data retention policies',
+    status: 'pending',
+    dueDate: '2025-08-20',
+    createdAt: '2025-07-10T16:45:00Z',
+    updatedAt: '2025-07-10T16:45:00Z',
+  },
+  {
+    id: '15',
+    title: 'Accessibility compliance (WCAG 2.1)',
+    description:
+      'Ensure application meets WCAG 2.1 AA standards for accessibility and screen reader compatibility',
+    status: 'pending',
+    dueDate: '2025-08-08',
+    createdAt: '2025-07-10T10:20:00Z',
+    updatedAt: '2025-07-10T10:20:00Z',
+  },
+  {
+    id: '16',
+    title: 'Email notification system',
+    description:
+      'Implement email notifications for task deadlines, assignments, and status changes',
+    status: 'completed',
+    dueDate: '2025-07-14',
+    createdAt: '2025-07-08T12:15:00Z',
+    updatedAt: '2025-07-08T12:15:00Z',
+  },
+  {
+    id: '17',
+    title: 'Team collaboration features',
+    description:
+      'Add team workspaces, task assignment, comments, and collaborative editing capabilities',
+    status: 'in_progress',
+    dueDate: '2025-08-03',
+    createdAt: '2025-07-09T16:30:00Z',
+    updatedAt: '2025-07-09T16:30:00Z',
+  },
+  {
+    id: '18',
+    title: 'Analytics and reporting dashboard',
+    description:
+      'Create comprehensive dashboard with task analytics, team productivity metrics, and custom reports',
+    status: 'pending',
+    dueDate: '2025-08-25',
+    createdAt: '2025-07-10T19:00:00Z',
+    updatedAt: '2025-07-10T19:00:00Z',
+  },
+  {
+    id: '19',
+    title: 'Third-party integrations',
+    description:
+      'Integrate with popular tools like Slack, Microsoft Teams, and project management platforms',
+    status: 'pending',
+    dueDate: '2025-09-01',
+    createdAt: '2025-07-10T20:15:00Z',
+    updatedAt: '2025-07-10T20:15:00Z',
+  },
+  {
+    id: '20',
+    title: 'Internationalization (i18n)',
+    description:
+      'Add multi-language support with localization for major languages and regional settings',
+    status: 'pending',
+    dueDate: '2025-09-15',
+    createdAt: '2025-07-10T21:30:00Z',
+    updatedAt: '2025-07-10T21:30:00Z',
+  },
 ];
 
 /**

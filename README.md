@@ -11,21 +11,26 @@ A modern, responsive task management application built with **Next.js 15**, **Re
 - ✅ **Responsive Design**: Works perfectly on desktop, tablet, and mobile
 - ✅ **Loading States**: Smooth loading indicators and skeleton screens
 - ✅ **Error Handling**: Comprehensive error states and user feedback
-- ✅ **Data Persistence**: Local storage for data persistence between sessions
+- ✅ **In-Memory State**: Fast, lightweight data management for demo purposes
 
 ### Advanced Features
 
+- ✅ **Pagination**: Smart pagination with 10 tasks per page
+- ✅ **Filtering**: Filter tasks by status (All, Pending, In Progress, Completed)
+- ✅ **Column Sorting**: Sort by title, status, or due date with visual indicators
 - ✅ **Status Management**: Track tasks through different states (Pending, In Progress, Completed)
 - ✅ **Due Date Tracking**: Visual indicators for overdue tasks
 - ✅ **Form Validation**: Client-side validation with detailed error messages
-- ✅ **Keyboard Navigation**: Full keyboard accessibility support
+- ✅ **Task Statistics**: Real-time dashboard with task counts and progress metrics
+- ✅ **Clear Filters**: One-click reset of all filters and sorting
 
 ### Technical Features
 
 - ✅ **React Query Integration**: Advanced data fetching and caching
 - ✅ **TypeScript**: Full type safety across the application
 - ✅ **Tailwind CSS**: Utility-first CSS framework for rapid development
-- ✅ **Component Architecture**: Clean, reusable component design
+- ✅ **Modular Components**: Reusable UI components (TaskFilter, Paginator, TaskStats, etc.)
+- ✅ **Custom Hooks**: Clean separation of logic with useTasksWithFiltering hook
 - ✅ **Performance Optimized**: Lazy loading, code splitting, and optimal re-renders
 - ✅ **Form Validation**: Zod schema validation with React Hook Form
 - ✅ **Code Quality**: ESLint, Prettier, and pre-commit hooks
@@ -121,32 +126,15 @@ All formatting and linting issues are automatically fixed before commit!
 ```
 proto-test/
 ├── .husky/                     # Git hooks configuration
-│   └── pre-commit             # Pre-commit hook script
 ├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── globals.css         # Global styles
-│   │   ├── layout.tsx          # Root layout component
-│   │   └── page.tsx            # Home page
+│   ├── app/                    # Next.js App Router pages and layouts
 │   ├── components/             # Reusable UI components
-│   │   ├── TaskTable.tsx       # Main task table component
-│   │   ├── TaskModal.tsx       # Create/Edit task modal
-│   │   └── DeleteConfirmModal.tsx # Delete confirmation modal
-│   ├── hooks/                  # Custom React hooks
-│   │   └── useTasks.ts         # React Query hooks for task operations
+│   ├── hooks/                  # Custom React hooks for business logic
 │   ├── lib/                    # Utility functions and configurations
-│   │   ├── mockData.ts         # Mock data and utility functions
-│   │   └── validations.ts      # Zod validation schemas
 │   ├── providers/              # React context providers
-│   │   └── QueryProvider.tsx   # React Query provider
 │   └── types/                  # TypeScript type definitions
-│       └── task.ts             # Task-related types
 ├── public/                     # Static assets
-├── .prettierrc                 # Prettier configuration
-├── .prettierignore            # Prettier ignore patterns
-├── package.json               # Project dependencies and scripts
-├── tailwind.config.ts         # Tailwind CSS configuration
-├── tsconfig.json              # TypeScript configuration
-└── README.md                  # This file
+└── config files                # ESLint, Prettier, Tailwind, TypeScript
 ```
 
 ## 🎨 Design System
@@ -180,7 +168,10 @@ proto-test/
 - [ ] Edit an existing task
 - [ ] Update task status (Pending → In Progress → Completed)
 - [ ] Delete a task with confirmation
-- [ ] Verify data persists after page refresh
+- [ ] Test filtering by status (All, Pending, In Progress, Completed)
+- [ ] Test sorting by title, status, and due date
+- [ ] Test pagination with 20 tasks (2 pages of 10 each)
+- [ ] Test clear filters functionality
 
 #### Form Validation
 
@@ -199,9 +190,10 @@ proto-test/
 
 #### Performance Testing
 
-- [ ] Test with 50+ tasks
+- [ ] Test with the included 20 mock tasks
 - [ ] Test rapid CRUD operations
-- [ ] Test network failure scenarios
+- [ ] Test rapid filter and sort changes
+- [ ] Test pagination navigation performance
 
 ## 🚀 Deployment
 
@@ -272,8 +264,9 @@ yarn type-check
 #### React Query Issues
 
 ```bash
-# Clear React Query cache
-# Open DevTools → Application → Local Storage → Clear
+# Refresh the page to reset in-memory state
+# Or restart the development server
+yarn dev
 ```
 
 #### Tailwind CSS Not Working
@@ -450,7 +443,6 @@ For questions or support, please create an issue in the repository or contact us
 - [x] **Task Table**: Responsive table with all required columns
 - [x] **Modal Forms**: Create and Edit task modals
 - [x] **Delete Confirmation**: Safe deletion with confirmation
-- [x] **Local Storage**: Data persistence between sessions
 - [x] **Error Handling**: Comprehensive error states
 - [x] **Loading States**: Smooth loading indicators
 - [x] **Responsive Design**: Mobile-first responsive layout

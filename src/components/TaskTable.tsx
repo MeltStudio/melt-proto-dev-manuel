@@ -1,16 +1,20 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  Task,
-  TaskStatus,
-  TaskStatusLabels,
-  TaskStatusColors,
-} from '@/types/task';
-import { useTasks, useDeleteTask } from '@/hooks/useTasks';
+import { Task } from '@/types/task';
+import { useDeleteTask } from '@/hooks/useTasks';
+import { useTasksWithFiltering } from '@/hooks/useTasksWithFiltering';
 import { formatDate, isTaskOverdue } from '@/lib/mockData';
 import { TaskModal } from './TaskModal';
 import { DeleteConfirmModal } from './DeleteConfirmModal';
+import { TaskFilter } from './TaskFilter';
+import { Paginator } from './Paginator';
+import { TaskStats } from './TaskStats';
+import { StatusBadge } from './StatusBadge';
+import {
+  SortableTableHeader,
+  NonSortableTableHeader,
+} from './SortableTableHeader';
 
 /**
  * Task Table Component
@@ -24,8 +28,17 @@ export function TaskTable() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
 
-  // React Query hooks
-  const { data: tasks = [], isLoading, error } = useTasks();
+  // Use the filtering hook
+  const {
+    processedTasks,
+    allTasks,
+    filtering,
+    handleSort,
+    handleFilterChange,
+    handlePageChange,
+    resetFilters,
+  } = useTasksWithFiltering(10);
+
   const deleteTaskMutation = useDeleteTask();
 
   /**
@@ -69,18 +82,9 @@ export function TaskTable() {
   };
 
   /**
-   * Get status badge classes
-   * @param status - Task status
-   * @returns CSS classes for status badge
-   */
-  const getStatusBadgeClasses = (status: TaskStatus) => {
-    return `inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${TaskStatusColors[status]}`;
-  };
-
-  /**
    * Loading State
    */
-  if (isLoading) {
+  if (processedTasks.isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
@@ -92,7 +96,7 @@ export function TaskTable() {
   /**
    * Error State
    */
-  if (error) {
+  if (processedTasks.error) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
@@ -153,93 +157,29 @@ export function TaskTable() {
       </div>
 
       {/* Task Statistics */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                <svg
-                  className="h-4 w-4 text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                  />
-                </svg>
-              </div>
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-blue-900">Total Tasks</p>
-              <p className="text-2xl font-bold text-blue-600">{tasks.length}</p>
-            </div>
-          </div>
-        </div>
+      <TaskStats tasks={allTasks} />
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <div className="w-8 h-8 bg-yellow-600 rounded-full flex items-center justify-center">
-                <svg
-                  className="h-4 w-4 text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-yellow-900">In Progress</p>
-              <p className="text-2xl font-bold text-yellow-600">
-                {tasks.filter(task => task.status === 'in_progress').length}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
-                <svg
-                  className="h-4 w-4 text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-green-900">Completed</p>
-              <p className="text-2xl font-bold text-green-600">
-                {tasks.filter(task => task.status === 'completed').length}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Filtering and Sorting Controls */}
+      <TaskFilter
+        statusFilter={filtering.statusFilter}
+        sortBy={filtering.sortBy}
+        sortOrder={filtering.sortOrder}
+        totalTasks={allTasks.length}
+        filteredTasks={processedTasks.totalTasks}
+        onFilterChange={handleFilterChange}
+        onSortChange={sortBy => handleSort(sortBy)}
+        onSortOrderToggle={() => handleSort(filtering.sortBy)}
+        onClearFilters={resetFilters}
+        showClearFilters={
+          filtering.statusFilter !== 'all' ||
+          filtering.sortBy !== 'dueDate' ||
+          filtering.sortOrder !== 'asc'
+        }
+      />
 
       {/* Tasks Table */}
       <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
-        {tasks.length === 0 ? (
+        {processedTasks.totalTasks === 0 ? (
           <div className="text-center py-12">
             <svg
               className="h-12 w-12 text-gray-400 mx-auto mb-4"
@@ -285,22 +225,35 @@ export function TaskTable() {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <SortableTableHeader
+                    sortKey="title"
+                    currentSortBy={filtering.sortBy}
+                    currentSortOrder={filtering.sortOrder}
+                    onSort={handleSort}
+                  >
                     Task
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  </SortableTableHeader>
+                  <SortableTableHeader
+                    sortKey="status"
+                    currentSortBy={filtering.sortBy}
+                    currentSortOrder={filtering.sortOrder}
+                    onSort={handleSort}
+                  >
                     Status
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  </SortableTableHeader>
+                  <SortableTableHeader
+                    sortKey="dueDate"
+                    currentSortBy={filtering.sortBy}
+                    currentSortOrder={filtering.sortOrder}
+                    onSort={handleSort}
+                  >
                     Due Date
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
-                  </th>
+                  </SortableTableHeader>
+                  <NonSortableTableHeader>Actions</NonSortableTableHeader>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {tasks.map(task => (
+                {processedTasks.tasks.map(task => (
                   <tr
                     key={task.id}
                     className="hover:bg-gray-50 transition-colors"
@@ -326,9 +279,7 @@ export function TaskTable() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={getStatusBadgeClasses(task.status)}>
-                        {TaskStatusLabels[task.status]}
-                      </span>
+                      <StatusBadge status={task.status} />
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                       {formatDate(task.dueDate)}
@@ -356,6 +307,13 @@ export function TaskTable() {
           </div>
         )}
       </div>
+
+      {/* Pagination */}
+      <Paginator
+        currentPage={processedTasks.currentPage}
+        totalPages={processedTasks.totalPages}
+        onPageChange={handlePageChange}
+      />
 
       {/* Modals */}
       <TaskModal
