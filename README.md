@@ -18,8 +18,6 @@ A modern, responsive task management application built with **Next.js 15**, **Re
 - ✅ **Status Management**: Track tasks through different states (Pending, In Progress, Completed)
 - ✅ **Due Date Tracking**: Visual indicators for overdue tasks
 - ✅ **Form Validation**: Client-side validation with detailed error messages
-- ✅ **Search & Filter**: (Ready for implementation)
-- ✅ **Pagination**: (Ready for implementation)
 - ✅ **Keyboard Navigation**: Full keyboard accessibility support
 
 ### Technical Features
@@ -29,6 +27,9 @@ A modern, responsive task management application built with **Next.js 15**, **Re
 - ✅ **Tailwind CSS**: Utility-first CSS framework for rapid development
 - ✅ **Component Architecture**: Clean, reusable component design
 - ✅ **Performance Optimized**: Lazy loading, code splitting, and optimal re-renders
+- ✅ **Form Validation**: Zod schema validation with React Hook Form
+- ✅ **Code Quality**: ESLint, Prettier, and pre-commit hooks
+- ✅ **Development Tools**: Husky, lint-staged, and automated formatting
 
 ## 🛠 Tech Stack
 
@@ -38,7 +39,12 @@ A modern, responsive task management application built with **Next.js 15**, **Re
 | **React**                | 19.0.0  | UI library                         |
 | **TypeScript**           | 5.x     | Type safety                        |
 | **React Query**          | 5.82.0  | Data fetching and state management |
+| **React Hook Form**      | 7.60.0  | Form state management              |
+| **Zod**                  | 4.0.2   | Schema validation                  |
 | **Tailwind CSS**         | 4.x     | Styling                            |
+| **Prettier**             | 3.6.2   | Code formatting                    |
+| **Husky**                | 9.1.7   | Git hooks                          |
+| **lint-staged**          | 16.1.2  | Pre-commit linting                 |
 | **React Query DevTools** | 5.82.0  | Development debugging              |
 
 ## 📦 Installation & Setup
@@ -81,20 +87,41 @@ A modern, responsive task management application built with **Next.js 15**, **Re
 4. **Open your browser:**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
-### Build for Production
+### Available Scripts
 
 ```bash
-# Build the application
-yarn build
+# Development
+yarn dev              # Start development server with Turbopack
+yarn build            # Build for production
+yarn start            # Start production server
 
-# Start production server
-yarn start
+# Code Quality
+yarn lint             # Run ESLint
+yarn lint:fix         # Fix ESLint issues automatically
+yarn format           # Format all files with Prettier
+yarn format:check     # Check if files need formatting
+yarn type-check       # Run TypeScript type checking
+
+# Git Hooks (automatic)
+yarn prepare          # Set up Husky git hooks
 ```
+
+### Development Workflow
+
+The project includes automated quality checks that run on every commit:
+
+1. **Prettier** - Formats code style, spacing, quotes
+2. **ESLint** - Fixes linting issues and enforces code quality
+3. **TypeScript** - Type checking to catch errors
+
+All formatting and linting issues are automatically fixed before commit!
 
 ## 🏗 Project Structure
 
 ```
 proto-test/
+├── .husky/                     # Git hooks configuration
+│   └── pre-commit             # Pre-commit hook script
 ├── src/
 │   ├── app/                    # Next.js App Router
 │   │   ├── globals.css         # Global styles
@@ -107,12 +134,15 @@ proto-test/
 │   ├── hooks/                  # Custom React hooks
 │   │   └── useTasks.ts         # React Query hooks for task operations
 │   ├── lib/                    # Utility functions and configurations
-│   │   └── mockData.ts         # Mock data and utility functions
+│   │   ├── mockData.ts         # Mock data and utility functions
+│   │   └── validations.ts      # Zod validation schemas
 │   ├── providers/              # React context providers
 │   │   └── QueryProvider.tsx   # React Query provider
 │   └── types/                  # TypeScript type definitions
 │       └── task.ts             # Task-related types
 ├── public/                     # Static assets
+├── .prettierrc                 # Prettier configuration
+├── .prettierignore            # Prettier ignore patterns
 ├── package.json               # Project dependencies and scripts
 ├── tailwind.config.ts         # Tailwind CSS configuration
 ├── tsconfig.json              # TypeScript configuration
@@ -173,72 +203,22 @@ proto-test/
 - [ ] Test rapid CRUD operations
 - [ ] Test network failure scenarios
 
-### Running Tests
-
-```bash
-# Run all tests
-yarn test
-
-# Run tests in watch mode
-yarn test:watch
-
-# Run tests with coverage
-yarn test:coverage
-```
-
 ## 🚀 Deployment
 
-### Vercel Deployment (Recommended)
+### Vercel Deployment
 
 1. **Connect your repository to Vercel:**
    - Visit [vercel.com](https://vercel.com)
    - Import your GitHub repository
    - Vercel will automatically detect it's a Next.js project
 
-2. **Environment Configuration:**
-   - No environment variables needed for the basic version
-   - All configuration is handled in the codebase
-
-3. **Deploy:**
+2. **Deploy:**
    - Push to main branch triggers automatic deployment
    - Or manually deploy from Vercel dashboard
 
-### Alternative Deployment Options
-
-#### Netlify
-
-```bash
-# Build command
-yarn build
-
-# Publish directory
-out/
-```
-
-#### Railway
-
-```bash
-# Dockerfile included for containerized deployment
-docker build -t tasks-app .
-docker run -p 3000:3000 tasks-app
-```
+No environment variables or additional configuration needed!
 
 ## 🔧 Configuration
-
-### Environment Variables
-
-Create a `.env.local` file in the root directory:
-
-```bash
-# Optional: Analytics tracking
-NEXT_PUBLIC_ANALYTICS_ID=your-analytics-id
-
-# Optional: Custom API URL (for future backend integration)
-NEXT_PUBLIC_API_URL=https://your-api-url.com
-
-# Optional: Feature flags
-NEXT_PUBLIC_ENABLE_DEVTOOLS=true
-```
 
 ### Tailwind CSS Configuration
 
@@ -271,56 +251,6 @@ export default {
 - **Bundle Analysis**: Built-in webpack bundle analyzer
 - **Lazy Loading**: React.lazy for modal components
 - **Memoization**: React.memo for expensive components
-
-### Performance Monitoring
-
-```bash
-# Analyze bundle size
-yarn build && yarn analyze
-
-# Lighthouse audit
-yarn lighthouse
-
-# Performance testing
-yarn perf
-```
-
-## 🤝 Contributing
-
-### Development Guidelines
-
-1. **Code Style:**
-   - Use TypeScript for all new files
-   - Follow ESLint configuration
-   - Use Prettier for code formatting
-   - Write descriptive commit messages
-
-2. **Component Guidelines:**
-   - Create reusable components in `/src/components/`
-   - Document all props with JSDoc comments
-   - Use TypeScript interfaces for props
-   - Implement proper error boundaries
-
-3. **Testing Guidelines:**
-   - Write unit tests for utility functions
-   - Write integration tests for components
-   - Test error scenarios and edge cases
-   - Maintain test coverage above 80%
-
-### Git Workflow
-
-```bash
-# Create feature branch
-git checkout -b feature/amazing-feature
-
-# Commit changes
-git commit -m "Add amazing feature"
-
-# Push to branch
-git push origin feature/amazing-feature
-
-# Create Pull Request
-```
 
 ## 🐛 Troubleshooting
 
@@ -367,35 +297,126 @@ DEBUG=true yarn dev
 DEBUG=true yarn start
 ```
 
-## 📈 Future Enhancements
+## 🎨 Subframe Integration Guide
 
-### Planned Features
+This project is architected for seamless **Subframe** integration. Here's your complete step-by-step guide:
 
-- [ ] **Backend Integration**: REST API with database
-- [ ] **Authentication**: User accounts and permissions
-- [ ] **Team Collaboration**: Share tasks with team members
-- [ ] **Real-time Updates**: WebSocket integration
-- [ ] **File Attachments**: Upload files to tasks
-- [ ] **Advanced Filtering**: Multiple filter criteria
-- [ ] **Bulk Operations**: Select and modify multiple tasks
-- [ ] **Data Export**: Export tasks to CSV/PDF
-- [ ] **Notifications**: Email and push notifications
-- [ ] **Mobile App**: React Native mobile application
+### **Step 1: Create Components in Subframe**
 
-### Subframe Integration
+1. **Sign up at [subframe.com](https://subframe.com)**
+2. **Create a new project** called "Tasks Management"
+3. **Design the following components:**
 
-This project is ready for Subframe integration. Follow these steps:
+   **📋 Task Table Component:**
+   - Table with columns: Title, Description, Status, Due Date, Actions
+   - Status badges with colors (pending: yellow, in-progress: blue, completed: green)
+   - Edit and Delete buttons for each row
+   - Create Task button in header
+   - Empty state with "No tasks" message
 
-1. **Export from Subframe:**
-   - Create your task table design in Subframe
-   - Export the components to your project
-   - Place exported components in `/src/components/subframe/`
+   **📝 Task Form Modal:**
+   - Modal overlay with form
+   - Input fields: Title*, Description*, Status dropdown, Due Date\*
+   - Cancel and Submit buttons
+   - Error states for validation
 
-2. **Integration Steps:**
-   - Replace existing components with Subframe exports
-   - Update imports in `TaskTable.tsx`
-   - Adjust styling to match Subframe design system
-   - Test all functionality with new components
+   **🗑️ Delete Confirmation Modal:**
+   - Warning icon with red background
+   - Task title display
+   - Cancel and Delete Task buttons
+
+### **Step 2: Export from Subframe**
+
+1. **Export each component** from Subframe
+2. **Download the generated React components**
+3. **Create folder structure:**
+   ```bash
+   mkdir -p src/components/subframe
+   ```
+
+### **Step 3: Integration Process**
+
+1. **Place exported components:**
+
+   ```
+   src/components/subframe/
+   ├── TaskTableSubframe.tsx
+   ├── TaskModalSubframe.tsx
+   └── DeleteModalSubframe.tsx
+   ```
+
+2. **Update component imports:**
+
+   ```typescript
+   // In src/app/page.tsx
+   import { TaskTableSubframe } from '@/components/subframe/TaskTableSubframe';
+
+   // Replace existing TaskTable component
+   <TaskTableSubframe />
+   ```
+
+3. **Connect Subframe components to data:**
+
+   ```typescript
+   // Pass existing hooks and state to Subframe components
+   const { data: tasks, isLoading, error } = useTasks();
+   const createTask = useCreateTask();
+   const updateTask = useUpdateTask();
+   const deleteTask = useDeleteTask();
+
+   <TaskTableSubframe
+     tasks={tasks}
+     isLoading={isLoading}
+     onCreateTask={createTask.mutate}
+     onUpdateTask={updateTask.mutate}
+     onDeleteTask={deleteTask.mutate}
+   />
+   ```
+
+4. **Preserve existing functionality:**
+   - Keep all React Query hooks (`useTasks`, `useCreateTask`, etc.)
+   - Keep all validation logic (`validations.ts`)
+   - Keep all type definitions (`types/task.ts`)
+   - Only replace the UI components
+
+### **Step 4: Testing & Verification**
+
+✅ **Test all CRUD operations work with new UI:**
+
+- [ ] Create new tasks
+- [ ] Edit existing tasks
+- [ ] Delete tasks with confirmation
+- [ ] Form validation still works
+- [ ] Loading states display correctly
+- [ ] Error handling works
+- [ ] Responsive design maintained
+
+### **Step 5: Styling Adjustments**
+
+- **Subframe uses Tailwind CSS** (same as this project) ✅
+- **Colors may need adjustment** to match design system
+- **Spacing and sizing** may need fine-tuning
+- **Animations** can be enhanced with Subframe's built-in transitions
+
+### **Benefits of This Architecture:**
+
+✅ **Zero Breaking Changes** - All business logic preserved  
+✅ **Drop-in Replacement** - Only UI components change  
+✅ **Type Safety** - All TypeScript types remain intact  
+✅ **Data Flow** - React Query hooks work unchanged  
+✅ **Validation** - Zod schemas work unchanged  
+✅ **Performance** - Optimistic updates preserved
+
+### **Why This Project is Subframe-Ready:**
+
+1. **Clean Separation** - UI and logic are properly separated
+2. **Props Interface** - Components accept all necessary props
+3. **Type Safety** - Full TypeScript support throughout
+4. **State Management** - Centralized with React Query
+5. **Validation** - Decoupled Zod schemas
+6. **Styling** - Already uses Tailwind CSS
+
+**The integration should take 30-60 minutes and require zero changes to business logic!** 🚀
 
 ## 📄 License
 
